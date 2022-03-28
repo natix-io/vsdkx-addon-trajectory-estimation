@@ -1,4 +1,4 @@
 DEFAULT = {
-    "centroid_index": 3,
+    "centroid_index": 2,
     "temporal_length": 10
 }
