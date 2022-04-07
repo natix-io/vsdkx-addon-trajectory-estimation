@@ -10,17 +10,17 @@ class TrajectoryProcessor(Addon):
     coordinates on the frame
 
     Attributes:
-        centroid_index (int): nth old position of object to compare present
+        _centroid_index (int): nth old position of object to compare present
         position for direction.
-        temporal_length (int): The amount of centroid points to compare against
+        _temporal_length (int): The amount of centroid points to compare against
         the present centroid position.
     """
     def __init__(self, addon_config: dict, model_settings: dict,
                  model_config: dict, drawing_config: dict):
         super().__init__(
             addon_config, model_settings, model_config, drawing_config)
-        self.centroid_index = addon_config['centroid_index']
-        self.temporal_length = addon_config['temporal_length']
+        self._centroid_index = addon_config['centroid_index']
+        self._temporal_length = addon_config['temporal_length']
 
     def post_process(self, addon_object: AddonObject) -> AddonObject:
         """
@@ -65,10 +65,10 @@ class TrajectoryProcessor(Addon):
             # temporal length, we consider the average of all recorded points
 
             starting_centroid_index = min(len(tracked_object.centroids),
-                                          self.centroid_index)
+                                          self._centroid_index)
             tracked_object_len = len(tracked_object.centroids)
-            temporal_len = self.temporal_length \
-                if tracked_object_len == self.temporal_length \
+            temporal_len = self._temporal_length \
+                if tracked_object_len == self._temporal_length \
                 else tracked_object_len
 
             prev_centroids = np.mean(
