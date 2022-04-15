@@ -1,7 +1,10 @@
+import logging
 import numpy as np
 
 from vsdkx.core.interfaces import Addon
 from vsdkx.core.structs import AddonObject
+
+LOG_TAG = "Trajectory Addon"
 
 
 class TrajectoryProcessor(Addon):
@@ -19,6 +22,8 @@ class TrajectoryProcessor(Addon):
                  model_config: dict, drawing_config: dict):
         super().__init__(
             addon_config, model_settings, model_config, drawing_config)
+        self._logger = logging.getLogger(LOG_TAG)
+                
         self._centroid_index = addon_config['centroid_index']
         self._temporal_length = addon_config['temporal_length']
 
@@ -27,6 +32,11 @@ class TrajectoryProcessor(Addon):
         Calculate movement directions and write them information in
         extra dict under 'movement_directions' key.
         """
+        self._logger.debug(
+            f"trackable objects history received"
+            f"{addon_object.shared.get('trackable_objects_history', {})}"
+        )
+            
         self._get_current_direction(
             addon_object.shared.get("trackable_objects_history", {})
         )
